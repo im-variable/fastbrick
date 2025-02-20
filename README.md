@@ -6,3 +6,10 @@ A simple CLI tool to generate FastAPI project structures.
 
 ```bash
 pip install fastapi-cli
+
+
+## Run server
+
+```bash
+uvicorn main:app --reload
+
