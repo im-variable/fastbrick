@@ -5,8 +5,12 @@ from jinja2 import Template
 # Default template for main.py
 MAIN_TEMPLATE = """\
 from fastapi import FastAPI
-from settings.middleware import GlobalMiddleware
+from middlewares.middleware import GlobalMiddleware
 from settings.routing import router
+from settings.database import engine, Base
+
+# ✅ Create all tables in the database
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -42,6 +46,15 @@ DATABASE_URL = "sqlite:///./test.db"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+# Dependency: Get DB Session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 """
 
 # Template for dynamic routing
@@ -148,6 +161,7 @@ def create_project(name):
     os.makedirs(f"{name}/routers", exist_ok=True)
     os.makedirs(f"{name}/settings", exist_ok=True)
     os.makedirs(f"{name}/alembic", exist_ok=True)
+    os.makedirs(f"{name}/middlewares", exist_ok=True)
 
     # Create main.py
     with open(f"{name}/main.py", "w") as f:
@@ -162,7 +176,7 @@ def create_project(name):
         f.write(ROUTING_TEMPLATE)
 
     # Create settings/middleware.py
-    with open(f"{name}/settings/middleware.py", "w") as f:
+    with open(f"{name}/middlewares/middleware.py", "w") as f:
         f.write(MIDDLEWARE_TEMPLATE)
 
     # Create models.py
