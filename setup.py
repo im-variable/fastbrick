@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="fastkit",
+    name="fastbrick",
     version="0.1",
     author="Sandeep Singh Negi",  # 👈 
     author_email="sandeepnegi1710@gmail.com",  # 👈 
@@ -12,7 +12,7 @@ setup(
     install_requires=["fastapi", "click", "jinja2"],
     entry_points={
         "console_scripts": [
-            "fastkit = fastapi_cli:cli",
+            "fastbrick = fastapi_cli:cli",
         ],
     },
     classifiers=[
