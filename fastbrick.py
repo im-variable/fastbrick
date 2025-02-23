@@ -40,8 +40,7 @@ def {{ app_name }}_home():
 DATABASE_TEMPLATE = """\
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, declarative_base
-
-DATABASE_URL = "sqlite:///./test.db"
+from settings.config import DATABASE_URL
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -104,30 +103,25 @@ class UserBase(BaseModel):
 
 """
 
-ALEMBIC_TEMPLATE = """\
-# Alembic placeholder
-"""
-
 MIDDLEWARE_TEMPLATE = """\
 import time
 import logging
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
+from settings.config import ALLOWED_IPS
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("middleware")
 
-# Define Blocked IPs
-BLOCKED_IPS = {"192.168.1.1"}  # Add more IPs here
 
 class GlobalMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         start_time = time.time()
         client_ip = request.client.host
 
-        # 🛑 Block Requests from Certain IPs
-        if client_ip in BLOCKED_IPS:
+        # ✅ Allow Only Specific IPs
+        if "*" not in ALLOWED_IPS and client_ip not in ALLOWED_IPS:
             return Response(content="⛔ Access Denied", status_code=403)
 
         # ⏳ Process Request
@@ -146,6 +140,12 @@ class GlobalMiddleware(BaseHTTPMiddleware):
         return response
 """
 
+CONFIG_TEMPLATE="""\
+DATABASE_URL = "sqlite:///./test.db"
+
+# Define Allowed IPs
+ALLOWED_IPS = {"*"}  # Set specific IPs to restrict access, or "*" to allow all
+"""
 
 @click.group()
 def cli():
@@ -156,6 +156,10 @@ def cli():
 @click.argument("name")
 def create_project(name):
     """Create a new FastAPI project with a clean structure."""
+    
+    if os.path.exists(name):
+        click.echo(f"❌ Error: Project '{name}' already exists! Choose a different name.")
+        return
     
     # Create project directories
     os.makedirs(f"{name}/routers", exist_ok=True)
@@ -175,7 +179,11 @@ def create_project(name):
     with open(f"{name}/settings/routing.py", "w") as f:
         f.write(ROUTING_TEMPLATE)
 
-    # Create settings/middleware.py
+    # Create settings/config.py
+    with open(f"{name}/settings/config.py", "w") as f:
+        f.write(CONFIG_TEMPLATE)
+
+    # Create middlewares/middleware.py
     with open(f"{name}/middlewares/middleware.py", "w") as f:
         f.write(MIDDLEWARE_TEMPLATE)
 
@@ -187,15 +195,11 @@ def create_project(name):
     with open(f"{name}/schemas.py", "w") as f:
         f.write(SCHEMAS_TEMPLATE)
 
-    # Create alembic.ini
-    with open(f"{name}/alembic.ini", "w") as f:
-        f.write(ALEMBIC_TEMPLATE)
-
     # Create routes.py
     with open(f"{name}/routes.py", "w") as f:
         f.write(ROUTES_TEMPLATE)
 
-    click.echo(f"✅ FastAPI project '{name}' created successfully with structured settings!")
+    click.echo(f"✅ FastAPI project '{name}' created successfully!")
 
 
 @click.command(name="create-app")
@@ -208,6 +212,10 @@ def create_app(name):
 
     if not os.path.exists("routers"):
         click.echo("❌ Error: No 'routers' directory found! Are you inside a FastAPI project?")
+        return
+
+    if os.path.exists(app_path):
+        click.echo(f"❌ Error: App '{name}' already exists! Choose a different name.")
         return
 
     # Ensure settings folder exists
@@ -244,7 +252,7 @@ def create_app(name):
                 f.write(updated_content)
                 f.truncate()
 
-    click.echo(f"✅ App '{name}' created successfully! All routes will be auto-detected.")
+    click.echo(f"✅ App '{name}' created successfully")
 
 
 cli.add_command(create_project)

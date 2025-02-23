@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="fastbrick",
-    version="0.3",
+    version="0.5",
     author="Sandeep Singh Negi",  # 👈 
     author_email="sandeepnegi1710@gmail.com",  # 👈 
     description="A CLI tool for generating FastAPI projects and apps",
