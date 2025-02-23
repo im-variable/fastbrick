@@ -16,12 +16,32 @@ Start the FastAPI server with:
 uvicorn main:app --reload
 ```
 
+## Help Command
+
+To see available options and commands:
+```sh
+fastbrick --help
+```
+
+## Usage
+Create a New Project
+Creates a new FastAPI project with a structured layout.
+```sh
+fastbrick create-project my_project
+```
+Create a New App
+Creates a new FastAPI app (router) with database settings.
+
+```sh
+fastbirck create-app my_app
+```
+
 ## Project Structure
 
 ```
 myproject/
 │── main.py          # Entry point for FastAPI app
-│── routes.py        # Contains 'custom_routes'
+│── routes.py        # Contains 'custom routes'
 │── alembic.ini
 │── models.py
 │── schemas.py
