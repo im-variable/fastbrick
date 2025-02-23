@@ -12,7 +12,7 @@ setup(
     author_email="sandeepnegi1710@gmail.com",  # 👈 
     description="A CLI tool for generating FastAPI projects and apps",
     long_description=long_description,  # Use the README content
-    long_description_content_type="text/plain",
+    long_description_content_type="text/markdown",
     packages=find_packages(),
     install_requires=["fastapi", "click", "jinja2"],
     entry_points={
