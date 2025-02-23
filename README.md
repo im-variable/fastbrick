@@ -1,19 +1,24 @@
-# FastAPI CLI 🚀
+# FastBrick 🚀
 
 A simple CLI tool to generate FastAPI project structures.
 
 ## Installation
 
-```bash
-pip install fastapi-cli
+Install FastBrick using:
+```sh
+pip install fastbrick
+```
 
+## Run Server
 
-## Run server
-
-```bash
+Start the FastAPI server with:
+```sh
 uvicorn main:app --reload
+```
 
-```bash
+## Project Structure
+
+```
 myproject/
 │── main.py          # Entry point for FastAPI app
 │── routes.py        # Contains 'custom_routes'
@@ -27,3 +32,7 @@ myproject/
 │   ├── database.py  # Database configuration
 │   ├── routing.py   # Router configurations
 │── alembic/
+```
+
+This structure ensures modularity and scalability for your FastAPI project. Adjust the folders and files as needed based on your project requirements.
+
