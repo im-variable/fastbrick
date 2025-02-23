@@ -41,17 +41,16 @@ fastbirck create-app my_app
 ```
 myproject/
 │── main.py          # Entry point for FastAPI app
-│── routes.py        # Contains 'custom routes'
-│── alembic.ini
+│── routes.py        # Contains 'app routes'
 │── models.py
 │── schemas.py
 │── middlewares/
 │   ├── middleware.py  # Global middleware logic
 │── routers/         # API route modules
 │── settings/
+│   ├── config.py  # Database configuration
 │   ├── database.py  # Database configuration
 │   ├── routing.py   # Router configurations
-│── alembic/
 ```
 
 This structure ensures modularity and scalability for your FastAPI project. Adjust the folders and files as needed based on your project requirements.
