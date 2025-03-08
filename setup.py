@@ -7,7 +7,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="fastbrick",
-    version="0.5.1",
+    version="0.5.2",
     author="Sandeep Singh Negi",  # 👈 
     author_email="sandeepnegi1710@gmail.com",  # 👈 
     description="A CLI tool for generating FastAPI projects and apps",
@@ -17,7 +17,7 @@ setup(
     install_requires=["fastapi", "click", "jinja2"],
     entry_points={
         "console_scripts": [
-            "fastbrick = fastbrick.cli:cli",
+            "fastbrick = fastbrick:main",
         ],
     },
     classifiers=[
