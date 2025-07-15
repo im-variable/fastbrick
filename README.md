@@ -2,7 +2,8 @@
 
 A simple CLI tool to generate FastAPI project structures.
 
-📦 [**View on PyPI**](https://pypi.org/project/fastbrick/)
+<a href="https://pypi.org/project/fastbrick/" target="_blank">📦 View on PyPI</a>
+
 
 ## Installation
 
